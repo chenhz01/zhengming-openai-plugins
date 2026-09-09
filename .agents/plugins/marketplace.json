@@ -1,0 +1,11 @@
+{
+  "name": "zhengming-skills",
+  "owner": "chenhz01",
+  "plugins": [
+    {
+      "name": "skill2openai-converter",
+      "source": "./plugins/skill2openai-converter",
+      "description": "把 zhengming/Agent-Skills 格式 skill（SKILL.md 文件夹）转换为 OpenAI Codex plugin 包（.codex-plugin/plugin.json + skills/ 布局 + marketplace.json 索引）。适用于: 要把 skill 发布到 OpenAI 生态 / 跨平台分发 / OpenAI plugin 打包 / skill 转换器 / skill2openai。纯 Python 标准库零依赖，只生成到本地输出目录，不自动对外发布。"
+    }
+  ]
+}

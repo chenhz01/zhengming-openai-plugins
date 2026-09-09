@@ -1,0 +1,60 @@
+# zhengming-openai-plugins
+
+> One command to turn any [Agent Skills](https://agentskills.io) format `SKILL.md` folder into an OpenAI Codex plugin bundle.
+
+**What**: a stdlib-only Python converter (`skill2openai.py`) that maps the Agent Skills standard (used by Claude skills, and co-adopted across the ecosystem) onto the OpenAI Codex plugin manifest (`.codex-plugin/plugin.json` + `plugins/<name>/skills/` layout + `.agents/plugins/marketplace.json` index).
+
+**Why it works**: both ecosystems share the same source of truth — the Agent Skills standard. A `SKILL.md` with YAML frontmatter is readable by both. The converter only needs to do directory搬运 + manifest generation.
+
+## The mapping (L1 — the public methodology)
+
+| Agent Skills side | → | OpenAI plugin side |
+|---|---|---|
+| `SKILL.md` frontmatter | kept as-is | `skills/<name>/SKILL.md` |
+| `name` + one-line description | mapped, description truncated to **1024 chars** (upload validation limit) | `plugin.json` `name` / `description` |
+| `display_name` / `version` / `tags` | mapped | `interface.displayName` / `version` / `keywords` |
+| 「触发条件」section short phrases | auto-extracted (up to 3) | `interface.defaultPrompt` |
+| — | generated | `interface.category` / `capabilities` / `brandColor` |
+| multiple skills | one plugin can bundle many (official pattern: 1 plugin, N skills) | `skills/` subdirectories |
+
+## Try it (L2 — hook)
+
+```bash
+python tools/skill2openai.py skill2openai-converter --out ./dist
+# → dist/plugins/skill2openai-converter/.codex-plugin/plugin.json (validated JSON)
+# → dist/.agents/plugins/marketplace.json
+```
+
+This repo dogfoods itself: `plugins/skill2openai-converter/` was generated **by the converter converting itself**. Pilot run converted 3 production skills in one command, all manifests passed JSON validation.
+
+Two hard constraints learned from the official repos, enforced in the converter:
+
+1. `description` ≤ 1024 chars (upload validation truncates otherwise)
+2. plugin `name` must not contain reserved words (`claude`, `anthropic`)
+
+## Install as a Codex plugin marketplace
+
+```bash
+# after publishing your own converted bundle:
+/plugin marketplace add <owner>/<repo>
+```
+
+## Repository layout
+
+```
+tools/skill2openai.py          # the converter (stdlib only, MIT)
+plugins/skill2openai-converter # self-generated example plugin
+.agents/plugins/marketplace.json
+```
+
+---
+
+## Contact / Collaboration
+
+Looking for collaboration on cross-platform agent skill distribution, context engineering, and skill-quality tooling.
+
+📧 **hcac4735@agent.qq.com**
+
+## License
+
+MIT
