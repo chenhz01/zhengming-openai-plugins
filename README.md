@@ -1,5 +1,7 @@
 # zhengming-openai-plugins
 
+![CI](https://github.com/chenhz01/zhengming-openai-plugins/actions/workflows/ci.yml/badge.svg)
+
 > One command to turn any [Agent Skills](https://agentskills.io) format `SKILL.md` folder into an OpenAI Codex plugin bundle.
 
 **What**: a stdlib-only Python converter (`skill2openai.py`) that maps the Agent Skills standard (used by Claude skills, and co-adopted across the ecosystem) onto the OpenAI Codex plugin manifest (`.codex-plugin/plugin.json` + `plugins/<name>/skills/` layout + `.agents/plugins/marketplace.json` index).
