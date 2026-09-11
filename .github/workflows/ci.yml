@@ -17,3 +17,9 @@ jobs:
 
       - name: Converter regression (3 fixtures + self-hosting consistency)
         run: python tests/ci_check.py
+
+      - name: Behavior regression (round-trip + interference, heuristic)
+        run: python tests/behavior_regression.py
+
+      - name: Publish index (multi-platform version sync check)
+        run: python tools/publish_index.py --check

@@ -1,0 +1,76 @@
+{
+  "generated_by": "tools/publish_index.py",
+  "repo": "github:chenhz01/zhengming-openai-plugins",
+  "platforms": [
+    "agent-skills (SKILL.md)",
+    "openai-codex-plugin (.codex-plugin)",
+    "registry (npx skills add <repo>)"
+  ],
+  "skills": [
+    {
+      "skill": "skill2openai-converter",
+      "agent-skills": {
+        "version": "0.1.0",
+        "state": "released"
+      },
+      "openai-plugin": {
+        "version": "0.1.0",
+        "state": "released",
+        "in_sync": true
+      },
+      "registry": {
+        "state": "installable",
+        "source": "github:chenhz01/zhengming-openai-plugins"
+      }
+    },
+    {
+      "skill": "demo-longdesc",
+      "agent-skills": {
+        "version": "0.1.0",
+        "state": "source-only"
+      },
+      "openai-plugin": {
+        "version": "0.1.0",
+        "state": "generated-on-check",
+        "in_sync": true
+      },
+      "registry": {
+        "state": "installable",
+        "source": "github:chenhz01/zhengming-openai-plugins"
+      }
+    },
+    {
+      "skill": "demo-minimal",
+      "agent-skills": {
+        "version": "0.1.0",
+        "state": "source-only"
+      },
+      "openai-plugin": {
+        "version": "0.1.0",
+        "state": "generated-on-check",
+        "in_sync": true
+      },
+      "registry": {
+        "state": "installable",
+        "source": "github:chenhz01/zhengming-openai-plugins"
+      }
+    },
+    {
+      "skill": "demo-triggers",
+      "agent-skills": {
+        "version": "0.1.0",
+        "state": "source-only"
+      },
+      "openai-plugin": {
+        "version": "0.1.0",
+        "state": "generated-on-check",
+        "in_sync": true
+      },
+      "registry": {
+        "state": "installable",
+        "source": "github:chenhz01/zhengming-openai-plugins"
+      }
+    }
+  ],
+  "in_sync": true
+}

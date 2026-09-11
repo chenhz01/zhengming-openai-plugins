@@ -17,5 +17,5 @@ phrases; the converter must extract them into `interface.defaultPrompt`.
 
 ## 触发条件
 
-- "run the fixture check" / "extract my prompts" · "fixture mode on"
+- "run the fixture check" / "extract defaultPrompt prompts" · "fixture mode on"
 - `/demo-triggers`
