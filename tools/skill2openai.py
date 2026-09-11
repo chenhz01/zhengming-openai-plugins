@@ -127,7 +127,12 @@ def main():
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    results = [convert(root / n, out_dir, root) for n in names]
+    def resolve(name_or_path: str) -> Path:
+        # 独立路径（相对或绝对）优先；否则回退到 root 下的名字（--all 兼容内部用法）
+        p = Path(name_or_path)
+        return p if (p / "SKILL.md").exists() else root / name_or_path
+
+    results = [convert(resolve(n), out_dir, root) for n in names]
 
     # 5. marketplace.json 索引
     ok = [r for r in results if r["ok"]]
