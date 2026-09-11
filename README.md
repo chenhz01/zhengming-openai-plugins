@@ -4,6 +4,8 @@
 
 > One command to turn any [Agent Skills](https://agentskills.io) format `SKILL.md` folder into an OpenAI Codex plugin bundle.
 
+📖 **Methodology article**: [Agent Skills: write once, publish to three platforms](docs/publishing-guide-zh.md) — ecosystem mapping, field-level format differences, and the co-build invitation (中文, with English TL;DR).
+
 **What**: a stdlib-only Python converter (`skill2openai.py`) that maps the Agent Skills standard (used by Claude skills, and co-adopted across the ecosystem) onto the OpenAI Codex plugin manifest (`.codex-plugin/plugin.json` + `plugins/<name>/skills/` layout + `.agents/plugins/marketplace.json` index).
 
 **Why it works**: both ecosystems share the same source of truth — the Agent Skills standard. A `SKILL.md` with YAML frontmatter is readable by both. The converter only needs to do directory搬运 + manifest generation.
