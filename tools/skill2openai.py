@@ -44,6 +44,27 @@ def extract_default_prompts(body: str) -> list:
             return picks[:3]
     return DEFAULT_PROMPTS
 
+def normalize_bundled_frontmatter(sk_md_path: Path, max_len: int) -> bool:
+    """把打包副本 SKILL.md front matter 里的 description 截断到 max_len。
+
+    OpenAI 提交校验对 SKILL 描述单独执行 skill_description_too_long（1024 上限，
+    见 developers.openai.com/plugins/deploy/submission-errors#skill-errors），
+    因此打包副本必须与 plugin.json 同步归一化。只改产物副本，源文件不动。
+    返回是否做了归一化。"""
+    text = sk_md_path.read_text(encoding="utf-8")
+    m = re.match(r"^---\s*\n(.*?)\n---\s*\n", text, re.DOTALL)
+    if not m:
+        return False
+    desc = str(parse_frontmatter(text).get("description") or "")
+    if len(desc) <= max_len:
+        return False
+    new_desc = desc[:max_len - 3] + "..."
+    new_block = re.sub(r"(?m)^description:[^\n]*$",
+                       lambda _: "description: " + new_desc, m.group(1), count=1)
+    sk_md_path.write_text("---\n" + new_block + "\n---\n" + text[m.end():],
+                          encoding="utf-8")
+    return True
+
 def convert(skill_dir: Path, out_dir: Path, skills_root: Path) -> dict:
     name = skill_dir.name
     report = {"skill": name, "ok": False, "warnings": []}
@@ -64,6 +85,12 @@ def convert(skill_dir: Path, out_dir: Path, skills_root: Path) -> dict:
         shutil.rmtree(dest)
     shutil.copytree(skill_dir, dest,
                     ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".git"))
+
+    # 1.5 打包副本 front matter description 同步归一化（源文件保持不动）
+    #     修复 openai/codex#44843 审查指出的 skill_description_too_long 缺口
+    if normalize_bundled_frontmatter(dest / "SKILL.md", DESCRIPTION_MAX):
+        report["warnings"].append(
+            f"bundled SKILL.md description 归一化到 {DESCRIPTION_MAX}（源文件未改动）")
 
     # 2. description：frontmatter description 优先，截断 1024
     desc = str(fm.get("description") or f"{name} skill for Agent workflows.")

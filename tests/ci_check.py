@@ -13,6 +13,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CONVERTER = ROOT / "tools" / "skill2openai.py"
 FIXTURES = ROOT / "tests" / "fixtures"
+sys.path.insert(0, str(ROOT / "tools"))
+from skill2openai import parse_frontmatter  # noqa: E402
 DEFAULT_PROMPTS = ["Use this skill on my current task",
                    "Explain what this skill does, then apply it"]
 
@@ -66,6 +68,24 @@ def main():
             skills_dir = out / "plugins" / name / "skills" / name
             check(skills_dir.is_dir() and (skills_dir / "SKILL.md").exists(),
                   f"{name}: skills/<name>/SKILL.md bundled")
+            bf = parse_frontmatter((skills_dir / "SKILL.md").read_text(encoding="utf-8")).get("description") or ""
+            check(len(str(bf)) <= 1024, f"{name}: bundled SKILL.md description <=1024")
+
+        # --- regression for openai/codex#44843 review: the bundled SKILL.md
+        #     front matter is validated against the official
+        #     skill_description_too_long limit (1024), while the source
+        #     fixture must remain untouched ---
+        src_desc = parse_frontmatter(
+            (FIXTURES / "demo-longdesc" / "SKILL.md").read_text(encoding="utf-8"))["description"]
+        check(len(src_desc) == 1200,
+              f"longdesc: source SKILL.md untouched (1200 chars, got {len(src_desc)})")
+        bundled_md = out / "plugins" / "demo-longdesc" / "skills" / "demo-longdesc" / "SKILL.md"
+        bundled_desc = parse_frontmatter(bundled_md.read_text(encoding="utf-8"))["description"]
+        check(len(bundled_desc) == 1024 and bundled_desc.endswith("..."),
+              f"longdesc: bundled front matter normalized to 1024 (got {len(bundled_desc)})")
+        pj_manifest = load(out / "plugins" / "demo-longdesc" / ".codex-plugin" / "plugin.json")
+        check(bundled_desc == pj_manifest["description"],
+              "longdesc: bundled description identical to manifest description")
 
         # --- self-hosting: converter output must equal committed plugin ---
         self_out = Path(td) / "self"
