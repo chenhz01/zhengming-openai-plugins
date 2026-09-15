@@ -57,7 +57,15 @@ plugins/skill2openai-converter # self-generated example plugin
 
 Looking for collaboration on cross-platform agent skill distribution, context engineering, and skill-quality tooling.
 
-📧 **hcac4735@agent.qq.com**
+## Commercial Support
+
+The converter is MIT-licensed and free to use. Paid options if you want it done for you:
+
+- **Custom conversion** — have a large / messy skill library? I'll run the pipeline end-to-end and hand back a validated, install-ready Codex plugin bundle.
+- **Integration & extension** — extra manifest targets, CI gating for skill quality, or bespoke front-matter normalization rules (e.g. different length limits per target platform).
+- **Advisory** — reviewing your existing plugin/skill packaging for submission-compatibility pitfalls before you hit the upload validator.
+
+Rates are project-based. Open an [issue](../../issues) or email **shanlun2029@outlook.com** with a short description of your skill library and what you need.
 
 ## License
 
