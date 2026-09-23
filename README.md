@@ -1,5 +1,23 @@
 # zhengming-openai-plugins
 
+> **One command: turn any Claude skill into a Codex plugin**
+
+
+
+## Install (one line)
+```bash
+见仓内说明
+```
+
+## Why not X?
+（见下方原文档）
+
+Topics: `openai-codex` · `agent-skills` · `converter` · `cli` · `stdlib`
+
+---
+
+# zhengming-openai-plugins
+
 ![CI](https://github.com/chenhz01/zhengming-openai-plugins/actions/workflows/ci.yml/badge.svg)
 
 > One command to turn any [Agent Skills](https://agentskills.io) format `SKILL.md` folder into an OpenAI Codex plugin bundle.
